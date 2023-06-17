@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:submission_2_restaurant_app/data/model/restaurant.dart';
+import 'package:submission_2_restaurant_app/providers/restaurant_provider.dart';
 import 'package:submission_2_restaurant_app/ui/restaurant_detail.dart';
 import 'package:submission_2_restaurant_app/ui/restaurant_list.dart';
 import 'package:submission_2_restaurant_app/ui/add_review.dart';
@@ -7,7 +9,14 @@ import 'package:submission_2_restaurant_app/ui/review_list.dart';
 import 'package:submission_2_restaurant_app/ui/search_restaurant.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => RestaurantProvider())
+      ],
+      child: const MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -27,33 +27,28 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
         foregroundColor: Colors.white,
         title: const Text('Search'),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Find your favourite restaurant here.',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+      body: ChangeNotifierProvider(
+        create: (context) => RestaurantProvider(),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Find your favourite restaurant here.',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              ChangeNotifierProvider(
-                create: (context) => RestaurantProvider(),
-                child: Consumer<RestaurantProvider>(
+                const SizedBox(height: 10),
+                Consumer<RestaurantProvider>(
                   builder: (context, state, _) {
                     return TextField(
                       onChanged: (value) async {
-                        var res = await RestaurantProvider().searchRestaurant(value);
-
-                        // print('state: ${context.watch<RestaurantProvider>().state}');
-                        result.clear();
-                        result.add(res.restaurants);
-
-                        print('resultsssss: $result');
+                        // await RestaurantProvider().searchRestaurant(value);
+                        Provider.of<RestaurantProvider>(context, listen: false).searchRestaurant(value);
                       },
                       decoration: InputDecoration(
                         filled: true,
@@ -67,8 +62,13 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                           color: Colors.white,
                           fontSize: 12
                         ),
-                        prefixIcon: const Icon(Icons.search),
-                        prefixIconColor: Colors.white
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.search),
+                          onPressed: () {
+                            print('ok');
+                          }, 
+                        ),
+                        suffixIconColor: Colors.white,
                       ),
                       style: const TextStyle(
                         color: Colors.white
@@ -76,72 +76,55 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                     );
                   }
                 ),
-              ),
-              const SizedBox(height: 10),
-              // FOR EXAMPLE
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: result.length,
-                itemBuilder: (context, index) {
-                  final restaurant = result[index];
-                  print('restaurant: $restaurant');
-                  // return ItemRestaurant(restaurant: restaurant);
-                  return Text('ok');
-                },
-              )
-              // Expanded(
-              //   child: ChangeNotifierProvider(
-              //     create: (context) => RestaurantProvider(),
-              //     child: Consumer<RestaurantProvider>(
-              //       builder: (context, state, _) {
-              //         print('state: ${state.state}');
-              //         if (state.state == ResultState.loading) {
-              //           return const Center(
-              //             child: CircularProgressIndicator(),
-              //           );
-              //         } else {
-              //           if (state.state == ResultState.hasData) {
-              //             return ListView.builder(
-              //               itemCount: state.result.total,
-              //               itemBuilder: (context, index) {
-              //                 final restaurant = state.result.restaurants[index];
-              //                 return ItemRestaurant(restaurant: restaurant);
-              //               },
-              //             );
-              //           } else if (state.state == ResultState.noData) {
-              //             return const Center(
-              //               child: Text('No restaurants is found'),
-              //             );
-              //           } else if (state.state == null) {
-              //             return const Text('');
-              //           } else {
-              //             return const Center(
-              //               child: Column(
-              //                 mainAxisAlignment: MainAxisAlignment.center,
-              //                 children: [
-              //                   Icon(
-              //                     Icons.wifi_off_outlined,
-              //                     size: 50,
-              //                   ),
-              //                   Text(
-              //                     'You are currently offline',
-              //                     style: TextStyle(
-              //                       fontSize: 15
-              //                     ),
-              //                   )
-              //                 ],
-              //               ),
-              //             );
-              //           }
-              //         }
-              //       },
-              //     ),
-              //   )
-              // ),
-            ]
-          ),
-        )
+                const SizedBox(height: 10),
+                Expanded(
+                  child: Consumer<RestaurantProvider>(
+                    builder: (context, state, _) {
+                      print('state: ${state.state}');
+                      if (state.state == ResultState.loading) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        if (state.state == ResultState.hasData) {
+                          return ListView.builder(
+                            itemCount: state.result.total,
+                            itemBuilder: (context, index) {
+                              final restaurant = state.result.restaurants[index];
+                              return ItemRestaurant(restaurant: restaurant);
+                            },
+                          );
+                        } else if (state.state == ResultState.noData) {
+                          return Center(
+                            child: Text(state.message),
+                          );
+                        } else {
+                          return const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.wifi_off_outlined,
+                                  size: 50,
+                                ),
+                                Text(
+                                  'You are currently offline',
+                                  style: TextStyle(
+                                    fontSize: 15
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                      }
+                    },
+                  )
+                ),
+              ]
+            ),
+          )
+        ),
       ),
     );
   }

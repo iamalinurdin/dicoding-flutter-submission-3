@@ -4,17 +4,22 @@ import 'package:submission_2_restaurant_app/data/model/restaurant.dart';
 
 enum ResultState { loading, noData, hasData, error }
 
-class RestaurantProvider extends ChangeNotifier {
+class RestaurantProvider with ChangeNotifier {
   late ApiService apiService = ApiService();
-  dynamic? _restaurantResult;
+  dynamic _restaurantResult;
   late Restaurant _restaurant;
-  ResultState? _state;
+  late ResultState _state;
   String _message = '';
 
   String get message => _message;
-  ResultState? get state => _state;
-  dynamic? get result => _restaurantResult;
+  ResultState get state => _state;
+  dynamic get result => _restaurantResult;
   Restaurant get restaurant => _restaurant;
+
+  RestaurantProvider() {
+    _state = ResultState.noData;
+    notifyListeners();
+  }
 
   Future<dynamic> fetchRestaurant() async {
     try {
@@ -61,6 +66,12 @@ class RestaurantProvider extends ChangeNotifier {
 
   Future<dynamic> searchRestaurant(String query) async {
     try {
+      if (query == '') {
+        _state = ResultState.noData;
+        notifyListeners();
+        return _message = '';
+      }
+
       _state = ResultState.loading;
       notifyListeners();
       
@@ -73,6 +84,9 @@ class RestaurantProvider extends ChangeNotifier {
       } else {
         _state = ResultState.hasData;
         notifyListeners();
+
+        print('data ditemukan');
+        print('result: ${response.restaurants}');
 
         return _restaurantResult = response;
       }
