@@ -3,9 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:submission_2_restaurant_app/providers/restaurant_provider.dart';
 import 'package:submission_2_restaurant_app/widgets/item_restaurant.dart';
 
-// tinggal menampilkan hasil pencarian di UI
-// CAPE ANJING
-
 class SearchRestaurant extends StatefulWidget {
   static const routeName = '/search_restaurant';
 
