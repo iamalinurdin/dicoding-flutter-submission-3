@@ -50,6 +50,7 @@ class Restaurant {
   final num rating ;
   final dynamic menus;
   final dynamic reviews;
+  final dynamic categories;
 
   const Restaurant({
     required this.id,
@@ -59,17 +60,22 @@ class Restaurant {
     required this.city,
     required this.rating,
     required this.menus,
-    required this.reviews
+    required this.reviews,
+    required this.categories,
   });
 
-  factory Restaurant.fromJson(Map<dynamic, dynamic> item) => Restaurant(
-    id         : item['id'],
-    name       : item['name'],
-    description: item['description'],
-    pictureId  : 'https://restaurant-api.dicoding.dev/images/medium/${item['pictureId']}',
-    city       : item['city'],
-    rating     : item['rating'],
-    menus      : item['menus'],
-    reviews    : item['customerReviews']
-  );
+  factory Restaurant.fromJson(Map<dynamic, dynamic> item) {
+    return Restaurant(
+      id         : item['id'],
+      name       : item['name'],
+      description: item['description'],
+      pictureId  : 'https://restaurant-api.dicoding.dev/images/medium/${item['pictureId']}',
+      city       : item['city'],
+      rating     : item['rating'],
+      menus      : item['menus'],
+      reviews    : item['customerReviews'],
+      categories : item['categories'] != null ? (item['categories'] as List).map((item) => item['name']).toList().join(', ') : item['categories'],
+    );
+  }
+  
 }

@@ -58,6 +58,13 @@ class RestaurantDetailPage extends StatelessWidget {
                               fontSize: 30
                             ),
                           ),
+                          const SizedBox(height: 5),
+                          Text(
+                            'Categories: ${state.restaurant.categories}',
+                            style: const TextStyle(
+                              fontSize: 15
+                            ),
+                          ),
                           const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,

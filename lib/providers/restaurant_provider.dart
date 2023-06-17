@@ -85,9 +85,6 @@ class RestaurantProvider with ChangeNotifier {
         _state = ResultState.hasData;
         notifyListeners();
 
-        print('data ditemukan');
-        print('result: ${response.restaurants}');
-
         return _restaurantResult = response;
       }
     } catch (e) {
