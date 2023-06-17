@@ -75,11 +75,13 @@ class RestaurantDetailPage extends StatelessWidget {
                                             const Icon(
                                               Icons.location_on_outlined,
                                               size: 18,
+                                              color: Colors.black87
                                             ),
                                             Text(
                                               state.restaurant.city,
                                               style: const TextStyle(
-                                                fontSize: 18
+                                                fontSize: 18,
+                                                color: Colors.black87
                                               ),
                                             )
                                           ],
@@ -87,7 +89,9 @@ class RestaurantDetailPage extends StatelessWidget {
                                         const Text(
                                           'Location',
                                           style: TextStyle(
-                                            fontSize: 12
+                                            fontSize: 12,
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.w700
                                           ),
                                         )
                                       ],
@@ -108,11 +112,13 @@ class RestaurantDetailPage extends StatelessWidget {
                                             const Icon(
                                               Icons.star_border_outlined,
                                               size: 18,
+                                              color: Colors.black87
                                             ),
                                             Text(
                                               '${state.restaurant.rating.toString()}/5',
                                               style: const TextStyle(
-                                                fontSize: 18
+                                                fontSize: 18,
+                                                color: Colors.black87
                                               ),
                                             )
                                           ],
@@ -120,7 +126,9 @@ class RestaurantDetailPage extends StatelessWidget {
                                         const Text(
                                           'Ratings',
                                           style: TextStyle(
-                                            fontSize: 12
+                                            fontSize: 12,
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.w700
                                           ),
                                         )
                                       ],
@@ -154,48 +162,72 @@ class RestaurantDetailPage extends StatelessWidget {
                           const Text(
                             'Description',
                             style: TextStyle(
-                              fontWeight: FontWeight.bold
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
                             ),
                           ),
                           const SizedBox(height: 5),
-                          Text(state.restaurant.description),
+                          Text(
+                            state.restaurant.description,
+                            style: const TextStyle(
+                              fontSize: 15
+                            ),
+                          ),
                           const Divider(
                             color: Colors.white,
                           ),
                           const Text(
                             'Foods',
                             style: TextStyle(
-                              fontWeight: FontWeight.bold
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
                             ),
                           ),
-                          const SizedBox(height: 5),
-                          SizedBox(
-                            height: 100,
-                            child: ListView.builder(
-                              itemCount: state.restaurant.menus['foods'].length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context, int index) {
-                                return ItemMenu(menu: state.restaurant.menus['foods'][index]['name']);
-                              },
-                            ),
+                          const SizedBox(height: 20),
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 0.75,
+                            ), 
+                            itemCount: state.restaurant.menus['foods'].length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ItemMenu(
+                                menu: state.restaurant.menus['foods'][index]['name'],
+                                image: 'images/food-vertical.jpg',
+                              );
+                            },
                           ),
-                          const SizedBox(height: 10),
+                          const Divider(
+                            color: Colors.white,
+                          ),
                           const Text(
                             'Beverages',
                             style: TextStyle(
-                              fontWeight: FontWeight.bold
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
                             ),
                           ),
-                          const SizedBox(height: 5),
-                          SizedBox(
-                            height: 100,
-                            child: ListView.builder(
-                              itemCount: state.restaurant.menus['drinks'].length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context, int index) {
-                                return ItemMenu(menu: state.restaurant.menus['drinks'][index]['name']);
-                              },
-                            ),
+                          const SizedBox(height: 20),
+                          GridView.builder(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 0.75,
+                            ), 
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: state.restaurant.menus['drinks'].length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ItemMenu(
+                                menu: state.restaurant.menus['drinks'][index]['name'],
+                                image: 'images/beverage-vertical.jpg',
+                              );
+                            },
                           ),
                         ]
                       );
