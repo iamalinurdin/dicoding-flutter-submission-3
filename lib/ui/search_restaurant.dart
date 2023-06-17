@@ -47,7 +47,6 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                   builder: (context, state, _) {
                     return TextField(
                       onChanged: (value) async {
-                        // await RestaurantProvider().searchRestaurant(value);
                         Provider.of<RestaurantProvider>(context, listen: false).searchRestaurant(value);
                       },
                       decoration: InputDecoration(
@@ -62,13 +61,11 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                           color: Colors.white,
                           fontSize: 12
                         ),
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.search),
-                          onPressed: () {
-                            print('ok');
-                          }, 
-                        ),
-                        suffixIconColor: Colors.white,
+                        // suffixIcon: IconButton(
+                        //   icon: const Icon(Icons.clear),
+                        //   onPressed: () {}, 
+                        // ),
+                        // suffixIconColor: Colors.white,
                       ),
                       style: const TextStyle(
                         color: Colors.white
@@ -80,7 +77,6 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                 Expanded(
                   child: Consumer<RestaurantProvider>(
                     builder: (context, state, _) {
-                      print('state: ${state.state}');
                       if (state.state == ResultState.loading) {
                         return const Center(
                           child: CircularProgressIndicator(),
