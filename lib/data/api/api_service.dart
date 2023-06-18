@@ -36,10 +36,13 @@ class ApiService {
     }
   }
 
-  Future addReview(Map<String, dynamic> payload) async {
+  Future<dynamic> addReview(payload) async {
     final response = await http.post(Uri.parse('$baseURL/review'), body: payload);
 
-    if (response.statusCode == 200) {
+    // print(json.decode(response.body)['message']);
+    // print(response.statusCode);
+
+    if (response.statusCode == 201) {
       return json.decode(response.body);
     } else {
       throw Exception('Failed to store review');
