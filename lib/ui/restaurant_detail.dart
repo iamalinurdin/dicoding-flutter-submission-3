@@ -239,7 +239,23 @@ class RestaurantDetailPage extends StatelessWidget {
                         ]
                       );
                     } else {
-                      return const Text('');
+                      return const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.wifi_off_outlined,
+                              size: 50,
+                            ),
+                            Text(
+                              'You are currently offline',
+                              style: TextStyle(
+                                fontSize: 15
+                              ),
+                            )
+                          ],
+                        ),
+                      );
                     }
                   }
                 },
